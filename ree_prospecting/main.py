@@ -97,7 +97,7 @@ def main() -> None:
 
     # Train final model on all labeled
     result = mdl.train_rf(
-        df_features, feature_names, labeled_mask, y,
+        df_features, feature_names, labeled_mask, y_labeled,
         random_state=cfg.model.random_state,
         n_estimators=cfg.model.rf_n_estimators,
         max_depth=cfg.model.rf_max_depth,
