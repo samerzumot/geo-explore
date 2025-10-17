@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  api:
+    build: .
+    command: uvicorn geoextract.api.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - ./:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - LLM_PROVIDER=${LLM_PROVIDER:-ollama}
+      - LLM_MODEL=${LLM_MODEL:-llama3.1:8b}
+      - OCR_ENGINE=${OCR_ENGINE:-both}
+      - PDF_DPI=${PDF_DPI:-300}
+      - CONFIDENCE_THRESHOLD=${CONFIDENCE_THRESHOLD:-0.5}
+    depends_on:
+      - redis
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
