@@ -1,0 +1,72 @@
+[tool.poetry]
+name = "geoextract"
+version = "0.1.0"
+description = "OCR + LLM geological report data extraction system"
+authors = ["GeoExtract Contributors <dev@geoextract.org>"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "geoextract" }]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+pydantic = "^2.9.2"
+pydantic-settings = "^2.6.1"
+typer = { version = "^0.12.5", extras = ["all"] }
+pypdf = "^5.1.0"
+pdf2image = "^1.17.0"
+pillow = "^10.4.0"
+opencv-python = "^4.10.0.84"
+requests = "^2.32.3"
+python-dotenv = "^1.0.1"
+rich = "^13.9.2"
+tqdm = "^4.66.5"
+fastapi = "^0.115.4"
+uvicorn = "^0.32.0"
+streamlit = "^1.39.0"
+geojson = "^3.1.0"
+
+# Optional runtime features (install with extras, e.g. poetry install -E ocr -E llm)
+paddleocr = { version = "^2.7.0.3", optional = true }
+pytesseract = { version = "^0.3.13", optional = true }
+ollama = { version = "^0.3.2", optional = true }
+openai = { version = "^1.51.2", optional = true }
+spacy = { version = "^3.7.6", optional = true }
+geopandas = { version = "^1.0.1", optional = true }
+shapely = { version = "^2.0.6", optional = true }
+pyproj = { version = "^3.6.1", optional = true }
+celery = { version = "^5.4.0", optional = true }
+redis = { version = "^5.2.0", optional = true }
+folium = { version = "^0.17.0", optional = true }
+
+[tool.poetry.extras]
+ocr = ["paddleocr", "pytesseract"]
+llm = ["ollama", "openai"]
+geospatial = ["geopandas", "shapely", "pyproj", "geojson", "folium"]
+queue = ["celery", "redis"]
+nlp = ["spacy"]
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.10.0"
+isort = "^5.13.2"
+mypy = "^1.13.0"
+pytest = "^8.3.3"
+pytest-cov = "^6.0.0"
+types-requests = "^2.32.0.20241016"
+
+[tool.poetry.scripts]
+geoextract = "geoextract.cli:app"
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unreachable = true
+ignore_missing_imports = true
