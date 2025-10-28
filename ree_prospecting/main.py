@@ -6,6 +6,7 @@ from pathlib import Path
 import numpy as np
 import geopandas as gpd
 import rasterio
+from rasterio import features
 
 from .config import CFG
 from . import data_loader as dl
@@ -45,7 +46,7 @@ def main() -> None:
     # Positive mask: 300 m buffer around MRDS points
     mrds_buffer = mrds_utm.copy()
     mrds_buffer["geometry"] = mrds_buffer.geometry.buffer(300)
-    pos_mask = rasterio.features.rasterize(
+    pos_mask = features.rasterize(
         shapes=((g, 1) for g in mrds_buffer.geometry),
         out_shape=(h, w),
         transform=grid_template.transform,
@@ -55,7 +56,7 @@ def main() -> None:
     # Negative candidates: outside 1 km buffer
     mrds_excl = mrds_utm.copy()
     mrds_excl["geometry"] = mrds_excl.geometry.buffer(1000)
-    excl_mask = rasterio.features.rasterize(
+    excl_mask = features.rasterize(
         shapes=((g, 1) for g in mrds_excl.geometry),
         out_shape=(h, w),
         transform=grid_template.transform,
